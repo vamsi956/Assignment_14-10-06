@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25-Minute Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .timer-container {
+            text-align: center;
+            background-color: white;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timer-label {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .timer-display {
+            font-size: 72px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #2c3e50;
+        }
+        
+        .timer-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 10px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #startBtn {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        #startBtn:hover {
+            background-color: #27ae60;
+        }
+        
+        #stopBtn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        #stopBtn:hover {
+            background-color: #c0392b;
+        }
+        
+        #resetBtn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        #resetBtn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <div class="timer-label">TIMER</div>
+        <div class="timer-display" id="timer">25:00</div>
+        <div class="timer-buttons">
+            <button id="startBtn">START</button>
+            <button id="stopBtn">STOP</button>
+            <button id="resetBtn">RESET</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timerDisplay = document.getElementById('timer');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            
+            let timeLeft = 25 * 60; // 25 minutes in seconds
+            let timerInterval = null;
+            
+            // Function to update the timer display
+            function updateDisplay() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Start the timer
+            startBtn.addEventListener('click', function() {
+                if (timerInterval === null) {
+                    timerInterval = setInterval(function() {
+                        if (timeLeft > 0) {
+                            timeLeft--;
+                            updateDisplay();
+                        } else {
+                            clearInterval(timerInterval);
+                            timerInterval = null;
+                            alert("Time's up!");
+                        }
+                    }, 1000);
+                }
+            });
+            
+            // Stop the timer
+            stopBtn.addEventListener('click', function() {
+                if (timerInterval !== null) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            });
+            
+            // Reset the timer
+            resetBtn.addEventListener('click', function() {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                timeLeft = 25 * 60;
+                updateDisplay();
+            });
+            
+            // Initialize the display
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
